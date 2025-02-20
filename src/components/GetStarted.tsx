@@ -10,7 +10,7 @@ export default function GetStarted() {
       <nav className="border-b border-border/40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
-            <div className="text-2xl font-bold">CS Department</div>
+            <div className="text-2xl font-bold">ECE</div>
             <div className="flex items-center gap-4">
               <Link to="/login">
                 <Button variant="ghost">Log in</Button>
@@ -34,7 +34,7 @@ export default function GetStarted() {
             className="text-center space-y-8"
           >
             <h1 className="text-4xl md:text-7xl font-bold tracking-tight bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Welcome to the CS <br />
+              Welcome to the ECE <br />
               Department Portal
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
