@@ -15,7 +15,7 @@ export default function GetStarted() {
               <Link to="/login">
                 <Button variant="ghost">Log in</Button>
               </Link>
-              <ThemeToggle />
+              <div className="w-10" />
             </div>
           </div>
         </div>

@@ -1,21 +1,8 @@
 import React from "react";
 import { motion } from "framer-motion";
 import LoginForm from "./LoginForm";
-import ThemeToggle from "./ThemeToggle";
 
-interface AuthContainerProps {
-  onLogin?: (email: string, password: string) => void;
-  onSSOLogin?: () => void;
-  isLoading?: boolean;
-  error?: string;
-}
-
-const AuthContainer = ({
-  onLogin = () => {},
-  onSSOLogin = () => {},
-  isLoading = false,
-  error = "",
-}: AuthContainerProps) => {
+const AuthContainer = () => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -35,23 +22,15 @@ const AuthContainer = ({
       />
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-[450px] mx-4">
+      <div className="relative z-10">
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.5 }}
-          className="w-full"
         >
-          <LoginForm
-            onSubmit={onLogin}
-            onSSOClick={onSSOLogin}
-            isLoading={isLoading}
-            error={error}
-          />
+          <LoginForm />
         </motion.div>
       </div>
-
-      <ThemeToggle />
     </motion.div>
   );
 };

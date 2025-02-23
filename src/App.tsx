@@ -1,74 +1,123 @@
-import { Suspense, useEffect } from "react";
-import { useTheme } from "./lib/theme";
-import { useRoutes, Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { Suspense } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import GetStarted from "./components/GetStarted";
 import Home from "./components/home";
 import UserProfile from "./components/profile/UserProfile";
 import AuthContainer from "./components/auth/AuthContainer";
 import ChatLayout from "./components/chat/ChatLayout";
 import ForumLayout from "./components/forums/ForumLayout";
-import CareerLayout from "./components/career/CareerLayout";
 import EventsLayout from "./components/events/EventsLayout";
 import AcademicLayout from "./components/academic/AcademicLayout";
 import MainLayout from "./components/layout/MainLayout";
 import SettingsLayout from "./components/settings/SettingsLayout";
 import HelpLayout from "./components/help/HelpLayout";
 import { useAuth } from "./lib/auth";
-import routes from "tempo-routes";
-
-function PrivateRoute() {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" replace />;
-}
+import ThemeToggle from "./components/auth/ThemeToggle";
 
 function App() {
-  const { theme } = useTheme();
-  const { isAuthenticated, login } = useAuth();
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
-  }, [theme]);
-
-  const handleLogin = async (email: string, password: string) => {
-    try {
-      await login(email, password);
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
-  };
+  const { isAuthenticated } = useAuth();
 
   return (
-    <Suspense fallback={<p>Loading...</p>}>
-      {import.meta.env.VITE_TEMPO === "true" && useRoutes(routes)}
+    <Suspense fallback={<div>Loading...</div>}>
+      <ThemeToggle />
       <Routes>
         <Route
           path="/"
-          element={!isAuthenticated ? <GetStarted /> : <Navigate to="/home" />}
+          element={
+            !isAuthenticated ? <GetStarted /> : <Navigate to="/home" replace />
+          }
         />
         <Route
           path="/login"
           element={
             !isAuthenticated ? (
-              <AuthContainer onLogin={handleLogin} />
+              <AuthContainer />
             ) : (
-              <Navigate to="/home" />
+              <Navigate to="/home" replace />
             )
           }
         />
-        <Route path="/home" element={<PrivateRoute />}>
-          <Route element={<MainLayout />}>
-            <Route index element={<Home />} />
-            <Route path="profile" element={<UserProfile />} />
-            <Route path="messages" element={<ChatLayout />} />
-            <Route path="forums" element={<ForumLayout />} />
-            <Route path="career" element={<CareerLayout />} />
-            <Route path="events" element={<EventsLayout />} />
-            <Route path="academic" element={<AcademicLayout />} />
-            <Route path="settings" element={<SettingsLayout />} />
-            <Route path="help" element={<HelpLayout />} />
-          </Route>
+
+        <Route element={<MainLayout />}>
+          <Route
+            path="/home"
+            element={
+              isAuthenticated ? <Home /> : <Navigate to="/login" replace />
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              isAuthenticated ? (
+                <UserProfile />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route
+            path="/messages"
+            element={
+              isAuthenticated ? (
+                <ChatLayout />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route
+            path="/forums"
+            element={
+              isAuthenticated ? (
+                <ForumLayout />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route
+            path="/events"
+            element={
+              isAuthenticated ? (
+                <EventsLayout />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route
+            path="/academic"
+            element={
+              isAuthenticated ? (
+                <AcademicLayout />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              isAuthenticated ? (
+                <SettingsLayout />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
+          <Route
+            path="/help"
+            element={
+              isAuthenticated ? (
+                <HelpLayout />
+              ) : (
+                <Navigate to="/login" replace />
+              )
+            }
+          />
         </Route>
-        {import.meta.env.VITE_TEMPO === "true" && <Route path="/tempobook/*" />}
+
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>
   );

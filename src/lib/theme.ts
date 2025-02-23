@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 type Theme = "light" | "dark";
 
@@ -7,10 +8,21 @@ interface ThemeState {
   setTheme: (theme: Theme) => void;
 }
 
-export const useTheme = create<ThemeState>((set) => ({
-  theme: "light",
-  setTheme: (theme) => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
-    set({ theme });
-  },
-}));
+export const useTheme = create<ThemeState>(
+  persist(
+    (set) => ({
+      theme: "light",
+      setTheme: (theme) => {
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+        set({ theme });
+      },
+    }),
+    {
+      name: "theme-storage",
+    },
+  ),
+);
